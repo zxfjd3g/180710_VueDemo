@@ -9,12 +9,11 @@
 </template>
 
 <script>
-  import PubSub from 'pubsub-js'
-
   export default {
     // 指定接收属性的属性名, 属性值的类型
     props: {
       todo: Object,
+      deleteTodo: Function,
       index: Number
     },
 
@@ -41,9 +40,7 @@
       deleteItem () {
         const {todo, deleteTodo, index} = this
         if(confirm(`确定删除${todo.title}吗?`)) {
-          // deleteTodo(index)
-          // 发布消息(deleteTodo)
-          PubSub.publish('deleteTodo', index)
+          deleteTodo(index)
         }
       }
     }

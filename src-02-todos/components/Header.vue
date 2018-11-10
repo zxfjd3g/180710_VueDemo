@@ -6,6 +6,13 @@
 
 <script>
   export default {
+    // 指定接收属性的属性名, 属性值的类型, 必要性
+    props: {
+      addTodo: {
+        type: Function,
+        required: true
+      }
+    },
 
     data () {
       return {
@@ -24,9 +31,8 @@
           title,
           complete: false
         }
-        // 分发自定义事件: addTodo
-        this.$emit('addTodo', todo)
-
+        // 调用 addTodo()添加todo
+        this.addTodo(todo)
         // 清除输入
         this.title = ''
       }
