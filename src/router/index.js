@@ -13,6 +13,7 @@ import MessageDetail from '../views/MessageDetail.vue'
 Vue.use(VueRouter)
 
 export default new VueRouter({
+  mode: 'history',
   // 配置应用中的所有路由
   routes: [
     { // 一级路由

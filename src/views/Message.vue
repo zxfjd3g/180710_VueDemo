@@ -3,8 +3,11 @@
     <ul>
       <li v-for="(m, index) in messages" :key="m.id">
         <router-link :to="`/home/message/detail/${m.id}?id=${m.id}`">{{m.title}}</router-link>
+        <button @click="pushShow(m.id)">push查看</button>
+        <button @click="replaceShow(m.id)">replace查看</button>
       </li>
     </ul>
+    <button @click="$router.back()">返回</button>
     <hr>
     <router-view/>
   </div>
@@ -30,6 +33,17 @@
         // 更新状态数据
         this.messages = messages
       }, 1000)
+    },
+
+    methods: {
+      pushShow (id) {
+        // push()实现路由跳转
+        this.$router.push(`/home/message/detail/${id}`)
+      },
+      replaceShow (id) {
+        // push()实现路由跳转
+        this.$router.replace(`/home/message/detail/${id}`)
+      }
     }
   }
 </script>
