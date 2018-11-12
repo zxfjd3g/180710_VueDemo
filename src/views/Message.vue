@@ -1,9 +1,14 @@
 <template>
-  <ul>
-    <li v-for="(m, index) in messages" :key="m.id">
-      <router-link to="???">{{m.title}}</router-link>
-    </li>
-  </ul>
+  <div>
+    <ul>
+      <li v-for="(m, index) in messages" :key="m.id">
+        <router-link :to="`/home/message/detail/${m.id}?id=${m.id}`">{{m.title}}</router-link>
+      </li>
+    </ul>
+    <hr>
+    <router-view/>
+  </div>
+
 </template>
 
 <script>
