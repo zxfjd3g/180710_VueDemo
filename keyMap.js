@@ -17,5 +17,15 @@
 * 代码导航                                               Alt+Right/Left
  */
 
+new Object()
+fn()
+function fn () {
 
+}
+
+/*
+执行函数定义: 创建函数对象
+执行函数: 执行函数体中的语句
+ */
+xxx()
 
