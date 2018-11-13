@@ -13,6 +13,12 @@
     <li>test1</li>
     <li>test2</li>
     <li>test3</li>
+    <li>test3</li>
+    <li>test3</li>
+    <li>test3</li>
+    <li>test3</li>
+    <li>test3</li>
+    <li>test3</li>
   </ul>
 </div>
 
@@ -51,9 +57,75 @@
 
 
   //3. Object.defineProperty(obj, propertyName, {}): 给对象添加属性(指定描述符)
+  const p = {
+    firstName: 'A',
+    lastName: 'B'
+  }
+  Object.defineProperty(p, 'fullName', {
+    /*数据描述符*/
+    //configurable: true/false  是否可以重新define
+    configurable: false, // 可以防止别人重新定义修改
+    //enumerable: true/false 是否可以枚举(for..in / keys())
+    enumerable: false, // 不可枚举
+    //value: 指定初始值
+    // value: 'A-B',
+    //writable: true/false value是否可以修改
+    // writable: false, // 不可修改
+    /*存取描述符*/
+    //get: 回调函数, 用来得到当前属性值
+    get () {
+      return this.firstName + '-' + this.lastName
+    },
+    //set: 回调函数, 用来监视当前属性值的变化
+    set (value) {
+      const names = value.split('-')
+      this.firstName = names[0]
+      this.lastName = names[1]
+    }
+  })
+
+  console.log(p.fullName)// A-B
+  p.firstName = 'C'
+  p.lastName = 'D'
+  console.log(p.fullName)// C-D
+  p.fullName = 'E-F'
+  console.log(p.firstName, p.lastName)// E F
+
+
   //4. Object.keys(obj): 得到对象自身可枚举属性组成的数组
+  const names = Object.keys(p)
+  console.log('names', names)
   //5. obj.hasOwnProperty(prop): 判断prop是否是obj自身的属性
+  console.log(p.hasOwnProperty('fullName'), p.hasOwnProperty('toString'))// true false
+
   //6. DocumentFragment: 文档碎片(高效批量更新多个节点)
+  // 创建一个空的fragment容器对象
+  const fragment = document.createDocumentFragment()
+
+  /*
+  <div id="demo">
+    <ul>
+      <li>test1</li>
+      <li>test2</li>
+    </ul>
+  </div>
+   */
+  const div = document.getElementById('demo')
+  // 将div中所有子节点添加到fragment中
+  let child
+  while(child=div.firstChild) {
+    fragment.appendChild(child) // 将child添加为fragment子节点(会先将其从div中移除)
+  }
+
+  // 更新fragment中所有li的内容
+  const lis3 = fragment.children[0].children
+  console.log('lis', lis3)
+  Array.prototype.slice.call(lis3).forEach(li => {
+    li.textContent = 'atguigu'  // 界面不会反复更新
+  })
+
+  // 将fragment添加为div的子节点
+  div.appendChild(fragment) // 批量更新界面
 </script>
 </body>
 </html>
