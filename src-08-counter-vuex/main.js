@@ -4,7 +4,6 @@
 import Vue from 'vue'
 import App from './App.vue'
 import store from './vuex/store'
-import './index.css'
 
 new Vue({
   el: '#app',
@@ -12,5 +11,5 @@ new Vue({
     App
   },
   template: '<App/>',
-  store
+  store, // 配置store==> 所有组件对象都多了一个属性: $store
 })
