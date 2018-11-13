@@ -2,25 +2,27 @@
 包含n个用于直接更新状态数据的方法的对象
  */
 import {
-  ADD_TODO,
-  DELETE_TODO,
-  DELETE_COMPLETE_TODOS,
-  SELECT_ALL_TODOS
+  REQUESTING,
+  REQ_SUCCESS,
+  REQ_FAIL
 } from './mutation-types'
 
 export default {
 
-  [ADD_TODO] (state, {todo}) {
-    state.todos.unshift(todo)
-  },
-  [DELETE_TODO] (state, {index}) {
-    state.todos.splice(index, 1)
-  },
-  [DELETE_COMPLETE_TODOS] (state) {
-    state.todos = state.todos.filter(todo => !todo.complete)
-  },
-  [SELECT_ALL_TODOS] (state, {isCheck}) {
-    state.todos.forEach(todo => todo.complete = isCheck)
+  [REQUESTING] (state) {
+    state.firstView = false
+    state.loading = true
+    state.users = []
+    state.errorMsg = ''
   },
 
+  [REQ_SUCCESS] (state, {users}) {
+    state.loading = false
+    state.users = users
+  },
+
+  [REQ_FAIL] (state, {errorMsg}) {
+    state.loading = false
+    state.errorMsg = errorMsg
+  },
 }

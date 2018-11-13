@@ -40,7 +40,7 @@
         const {todo, index} = this
         if(confirm(`确定删除${todo.title}吗?`)) {
           // deleteTodo(index)
-          this.$store.dispatch('delelteTodo', index)
+          this.$store.dispatch('deleteTodo', index)
         }
       }
     }
