@@ -1,10 +1,16 @@
 function Compile(el, vm) {
+  // 保存vm
   this.$vm = vm;
+  // 保存el元素
   this.$el = this.isElementNode(el) ? el : document.querySelector(el);
 
+  // 如果el元素存在
   if (this.$el) {
+    // 将el中所有子节点转移到fragment中
     this.$fragment = this.node2Fragment(this.$el);
+    // 编译fragment中所层次子节点
     this.init();
+    // 将fragment中的所有子节点添加回el中
     this.$el.appendChild(this.$fragment);
   }
 }
@@ -26,19 +32,30 @@ Compile.prototype = {
     this.compileElement(this.$fragment);
   },
 
+  /*
+  编译指定element/fragment的所有子节点
+   */
   compileElement: function (el) {
+    // 得到最外层的所有子节点
     var childNodes = el.childNodes,
+      // 保存compile对象
       me = this;
 
+    // 遍历所有子节点
     [].slice.call(childNodes).forEach(function (node) {
+      // 得到节点的文本内容
       var text = node.textContent;
+      // 正则对象: 匹配大括号表达式以及内部包含的表达式
       var reg = /\{\{(.*)\}\}/;
 
+      // 如果是元素点
       if (me.isElementNode(node)) {
+        // 编译元素节点的指令
         me.compile(node);
-
+      // 如果是大括号表达式格式的文本点
       } else if (me.isTextNode(node) && reg.test(text)) {
-        me.compileText(node, RegExp.$1);
+        // 编译文本节点
+        me.compileText(node, RegExp.$1);  // name
       }
 
       if (node.childNodes && node.childNodes.length) {
@@ -123,10 +140,15 @@ var compileUtil = {
     this.bind(node, vm, exp, 'class');
   },
 
-  // 真正编程的工具方法
+  /*
+  真正编程的工具方法
+  exp: 表达式(name)
+  dir: 指令名(text/html/class/model)
+   */
   bind: function (node, vm, exp, dir) {
+    // 根据指令名得到更新节点的更新函数
     var updaterFn = updater[dir + 'Updater'];
-
+    // 调用更新函数去更新节点
     updaterFn && updaterFn(node, this._getVMVal(vm, exp));
 
     new Watcher(vm, exp, function (value, oldValue) {
@@ -144,6 +166,7 @@ var compileUtil = {
     }
   },
 
+  // 得到表达式对应的值
   _getVMVal: function (vm, exp) {
     var val = vm._data;
     exp = exp.split('.');
