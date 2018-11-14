@@ -10,6 +10,33 @@
   -->
 </head>
 <body>
+<div id="test">
+  <p>xxxxx</p>
+  <p>{{name}}</p>
+  <p v-text="name"></p>
+  <button v-on:click="update">更新</button>
+</div>
+<script type="text/javascript" src="./js/mvvm/compile.js"></script>
+<script type="text/javascript" src="./js/mvvm/mvvm.js"></script>
+<script type="text/javascript" src="./js/mvvm/observer.js"></script>
+<script type="text/javascript" src="./js/mvvm/watcher.js"></script>
+<script type="text/javascript">
+  new MVVM({
+    el: '#test',
+    data: {
+      name: 'xiaohong',
+      wife: {
+        name: 'xiaoxiao',
+        age: 18
+      }
+    },
+    methods: {
+      update () {
+        this.name = 'xiaozhang'
+      }
+    }
+  })
+</script>
 </body>
 
 </html>

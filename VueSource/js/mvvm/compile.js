@@ -52,7 +52,7 @@ Compile.prototype = {
       if (me.isElementNode(node)) {
         // 编译元素节点的指令
         me.compile(node);
-      // 如果是大括号表达式格式的文本点
+        // 如果是大括号表达式格式的文本点
       } else if (me.isTextNode(node) && reg.test(text)) {
         // 编译文本节点
         me.compileText(node, RegExp.$1);  // name
@@ -65,22 +65,29 @@ Compile.prototype = {
   },
 
   compile: function (node) {
+    // 得到所有属性节点
     var nodeAttrs = node.attributes,
       me = this;
-
+    // 遍历所有属性
     [].slice.call(nodeAttrs).forEach(function (attr) {
+      // 得到属性名: v-on:click
       var attrName = attr.name;
+      // 如果是指令属性
       if (me.isDirective(attrName)) {
+        // 得到属性值(表达式): test
         var exp = attr.value;
+        // 得到指令名: on:click
         var dir = attrName.substring(2);
         // 事件指令
         if (me.isEventDirective(dir)) {
+          // 处理事件指令
           compileUtil.eventHandler(node, me.$vm, exp, dir);
-          // 普通指令
+        // 一般指令
         } else {
+          // 解析一般指令: 调用对应的工具函数解析
           compileUtil[dir] && compileUtil[dir](node, me.$vm, exp);
         }
-
+        // 移除指令属性
         node.removeAttribute(attrName);
       }
     });
@@ -156,12 +163,19 @@ var compileUtil = {
     });
   },
 
-  // 事件处理
+  /*
+  事件处理
+  exp: 表达式 test
+  dir: 指令名 on:click
+   */
   eventHandler: function (node, vm, exp, dir) {
+    // 从指令名中取出事件名/类型
     var eventType = dir.split(':')[1],
+      // 根据表达式从methods中取出对应的函数(事件回调函数)
       fn = vm.$options.methods && vm.$options.methods[exp];
-
+    // 如果都存在
     if (eventType && fn) {
+      // 给元素节点绑定指定事件名和回调函数的事件监听, 回调函数中强制绑定的this为vm
       node.addEventListener(eventType, fn.bind(vm), false);
     }
   },
@@ -207,11 +221,7 @@ var updater = {
   // 更新节点的className
   classUpdater: function (node, value, oldValue) {
     var className = node.className;
-    className = className.replace(oldValue, '').replace(/\s$/, '');
-
-    var space = className && String(value) ? ' ' : '';
-
-    node.className = className + space + value;
+    node.className = className ? (className + ' ' + value) : value
   },
 
   // 更新节点的value
