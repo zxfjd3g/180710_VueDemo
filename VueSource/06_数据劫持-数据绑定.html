@@ -14,6 +14,7 @@
   <p>xxxxx</p>
   <p>{{name}}</p>
   <p v-text="name"></p>
+  <p v-text="wife.name"></p>
   <button v-on:click="update">更新</button>
 </div>
 <script type="text/javascript" src="./js/mvvm/compile.js"></script>
@@ -33,6 +34,8 @@
     methods: {
       update () {
         this.name = 'xiaozhang'
+        this.wife.name = 'A'
+        this.wife.age = 'B'
       }
     }
   })

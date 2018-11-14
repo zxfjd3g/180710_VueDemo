@@ -15,6 +15,7 @@ function MVVM(options) {
     me._proxy(key);
   });
 
+  // 监视data中所有属性(对所有属性实现劫持)
   observe(data, this);
 
   // 创建一个compile对象: 编译模板
