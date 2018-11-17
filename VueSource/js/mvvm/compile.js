@@ -128,16 +128,21 @@ var compileUtil = {
   },
   // 编译 v-model
   model: function (node, vm, exp) {
+    // 初始化显示, 创建对应的watcher为后面更新做准备
     this.bind(node, vm, exp, 'model');
 
     var me = this,
+      // 得到表达式当前的值
       val = this._getVMVal(vm, exp);
+    // 给元素节点绑定input事件监听, 一旦输入框的值发生改变就会自动调用
     node.addEventListener('input', function (e) {
+      // 得到输入框最新的值
       var newValue = e.target.value;
       if (val === newValue) {
         return;
       }
 
+      // 将最新的值设置到表达式在data对应的属性上 ==> 数据绑定自动更新对应节点
       me._setVMVal(vm, exp, newValue);
       val = newValue;
     });
